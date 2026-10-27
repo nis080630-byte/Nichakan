@@ -61,7 +61,7 @@ button:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
 .rules{list-style:none;margin:0 0 6px;padding:0;display:grid;gap:8px}
 .rules li{display:flex;gap:10px;align-items:center}
 .rules li::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--sun);flex:none}
-.hero-art{display:flex;justify-content:center;align-items:flex-end;background:radial-gradient(circle at 50% 35%,var(--stage1),var(--stage2));border-radius:26px;padding:18px 8px 6px;overflow:hidden}
+.hero-art{display:flex;justify-content:center;align-items:flex-end;background:var(--stage2);border-radius:26px;padding:18px 8px 6px;overflow:hidden}
 .hero-art svg{width:34%;min-width:0;height:auto;margin-inline:-3%}
 
 /* progress */
@@ -72,7 +72,7 @@ button:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
 
 /* board */
 .board{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:22px}
-.stage{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:340px;padding:18px 12px;border-radius:24px;background:radial-gradient(circle at 50% 30%,var(--stage1),var(--stage2));overflow:hidden}
+.stage{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:340px;padding:18px 12px;border-radius:24px;background:var(--stage2);overflow:hidden}
 .art{display:flex;justify-content:center;align-items:flex-end;width:100%}
 .art svg{width:100%;max-width:300px;height:auto;animation:bob 4.5s ease-in-out infinite}
 .art.group svg{max-width:46%;margin-inline:-3%}
@@ -111,7 +111,7 @@ button:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
 
 /* end */
 .end{display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px}
-.end-art{display:flex;justify-content:center;width:100%;max-width:520px;background:radial-gradient(circle at 50% 35%,var(--stage1),var(--stage2));border-radius:26px;padding:14px 8px 4px;overflow:hidden}
+.end-art{display:flex;justify-content:center;width:100%;max-width:520px;background:var(--stage2);border-radius:26px;padding:14px 8px 4px;overflow:hidden}
 .end-art svg{width:24%;height:auto;margin-inline:-1%}
 .big{font-family:var(--font-d);font-weight:700;font-size:clamp(40px,9vw,64px);line-height:1.1;font-variant-numeric:tabular-nums}
 .big small{font-size:18px;font-weight:500;color:var(--muted)}
@@ -167,7 +167,6 @@ button:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
       <div class="board">
         <div class="stage">
           <div class="art" id="art"></div>
-          <div class="tag" id="tag"></div>
         </div>
         <div class="qa">
           <div class="timer" role="timer" aria-label="เวลาที่เหลือ">
@@ -221,12 +220,12 @@ const HATS={
 
 function avatar(c){
   const D=[];
-  const G=(col,t)=>{const id='x'+(UID++);D.push(t==='r'?rg(id,col):lg(id,col));return `url(#${id})`};
+  const G=(col)=>col; /* flat vector graphic style: solid fills, no gradients */
   const SH='x'+(UID++);
   D.push(`<radialGradient id="${SH}"><stop offset="0" stop-color="#2b1a10" stop-opacity=".34"/><stop offset="1" stop-color="#2b1a10" stop-opacity="0"/></radialGradient>`);
   const skin=c.skin||SK.light, hair=c.hair||'#2F2430';
   const S=G(skin,'r'), T=G(c.shirt,'r'), H=G(hair,'r'), B=G(c.bg,'r');
-  const hand=(x,y)=>`<circle cx="${x}" cy="${y}" r="8.500" fill="${S}"/><ellipse cx="${x-3}" cy="${y-3.500}" rx="3.200" ry="2" fill="#fff" opacity=".4"/>`;
+  const hand=(x,y)=>`<circle cx="${x}" cy="${y}" r="8.500" fill="${S}"/>`;
   const P=(PROPS[c.prop]||(()=>({})))(G,c,S,hand);
   const style=c.style||'short';
   const hairBack=style==='long'?`<path d="M62 82C56 38 144 38 138 82L144 122Q100 132 56 122Z" fill="${H}"/>`:style==='bob'?`<path d="M63 82C58 40 142 40 137 82L140 108Q100 118 60 108Z" fill="${H}"/>`:style==='bun'?`<circle cx="100" cy="40" r="14" fill="${H}"/>`:'';
@@ -244,11 +243,9 @@ function avatar(c){
     hairBack+
     `<rect x="90" y="100" width="20" height="24" rx="8" fill="${dk(skin,.12)}"/>`+
     `<path d="M50 178C50 138 70 118 100 118C130 118 150 138 150 178Q100 190 50 178Z" fill="${T}"/>`+
-    `<path d="M62 152C62 138 72 129 86 124" stroke="#fff" stroke-opacity=".38" stroke-width="6" stroke-linecap="round" fill="none"/>`+
     collar+(P.extra?P.extra(G):'')+sleeves+
     `<circle cx="65" cy="85" r="7" fill="${S}"/><circle cx="135" cy="85" r="7" fill="${S}"/>`+
     `<circle cx="100" cy="80" r="35" fill="${S}"/>`+
-    `<ellipse cx="88" cy="62" rx="11" ry="6" fill="#fff" opacity=".28"/>`+
     hairFront+
     `<ellipse cx="86" cy="83" rx="3.600" ry="4.600" fill="#2b2230"/><ellipse cx="114" cy="83" rx="3.600" ry="4.600" fill="#2b2230"/>`+
     `<circle cx="87.500" cy="81" r="1.400" fill="#fff"/><circle cx="115.500" cy="81" r="1.400" fill="#fff"/>`+
@@ -419,7 +416,6 @@ function render(){
   const art=$('art');
   art.className='art'+(q.art.length>1?' group'+(q.art.length>3?' g4':''):'');
   art.innerHTML=artHTML(q.art);
-  $('tag').textContent=q.tag||CAREERS[q.art[0]].name;
   $('q').textContent=q.q;
   $('fb').hidden=true;
   const box=$('opts');
