@@ -1,0 +1,522 @@
+<title>ภารกิจเครือข่ายอาชีพ</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@500;600;700&family=Sarabun:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one calm column. Header, then a two-panel board (3D career stage left, question right); stacks on phones. */
+:root{
+  --bg:#FFF1DE; --bg2:#FFE2BF; --card:#FFFDF9; --ink:#3B2B2B; --muted:#7B6560; --line:#F1D8B6;
+  --brand:#1B8780; --brand-ink:#FFFFFF; --sun:#F4B43A; --coral:#EC7C5C;
+  --ok:#23915D; --ok-bg:#E1F4E8; --warm:#B8710F; --warm-bg:#FFEFCF;
+  --stage1:#FFFFFF; --stage2:#FFD7A3; --shadow:0 12px 30px rgba(130,76,20,.14);
+  --font-d:'Prompt','Noto Sans Thai',system-ui,sans-serif;
+  --font-b:'Sarabun','Noto Sans Thai',system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#251D28; --bg2:#33283A; --card:#2F2535; --ink:#F7EADF; --muted:#C7B3AD; --line:#4C3C53;
+    --brand:#4FC5BA; --brand-ink:#0F302D; --sun:#F6C453; --coral:#F29A7E;
+    --ok:#5FD494; --ok-bg:#1F3B2C; --warm:#F4B863; --warm-bg:#45341F;
+    --stage1:#5A4764; --stage2:#2C2133; --shadow:0 12px 30px rgba(0,0,0,.35);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#251D28; --bg2:#33283A; --card:#2F2535; --ink:#F7EADF; --muted:#C7B3AD; --line:#4C3C53;
+  --brand:#4FC5BA; --brand-ink:#0F302D; --sun:#F6C453; --coral:#F29A7E;
+  --ok:#5FD494; --ok-bg:#1F3B2C; --warm:#F4B863; --warm-bg:#45341F;
+  --stage1:#5A4764; --stage2:#2C2133; --shadow:0 12px 30px rgba(0,0,0,.35);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; font-family:var(--font-b); font-size:17px; line-height:1.65; color:var(--ink);
+  background:var(--bg) linear-gradient(180deg,var(--bg2),var(--bg) 380px) no-repeat;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:18px 44px; min-height:100%;
+}
+.app{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+h1,h2,h3{font-family:var(--font-d);line-height:1.35;margin:0;text-wrap:balance}
+p{margin:0}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--font-d);font-weight:600}
+.brand svg{width:30px;height:30px}
+.stat{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px 14px;font-family:var(--font-d);font-weight:500;font-variant-numeric:tabular-nums}
+.ic{width:20px;height:20px;fill:var(--sun);flex:none}
+.card{background:var(--card);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);padding:clamp(18px,4vw,34px)}
+.btn{font-family:var(--font-d);font-weight:600;font-size:18px;border:0;border-radius:16px;padding:13px 28px;background:var(--brand);color:var(--brand-ink);cursor:pointer;box-shadow:0 5px 0 rgba(0,0,0,.22);transition:transform .1s,box-shadow .1s}
+.btn:hover{filter:brightness(1.06)}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.22)}
+button:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+
+/* start */
+.hero{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:24px;align-items:center}
+.hero-text{display:flex;flex-direction:column;gap:14px;align-items:flex-start}
+.eyebrow{font-family:var(--font-d);font-size:14px;letter-spacing:.04em;color:var(--brand);font-weight:600}
+.hero h1{font-size:clamp(30px,6vw,46px)}
+.lead{font-size:18px;color:var(--muted)}
+.rules{list-style:none;margin:0 0 6px;padding:0;display:grid;gap:8px}
+.rules li{display:flex;gap:10px;align-items:center}
+.rules li::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--sun);flex:none}
+.hero-art{display:flex;justify-content:center;align-items:flex-end;background:radial-gradient(circle at 50% 35%,var(--stage1),var(--stage2));border-radius:26px;padding:18px 8px 6px;overflow:hidden}
+.hero-art svg{width:34%;min-width:0;height:auto;margin-inline:-3%}
+
+/* progress */
+.progress{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.progress i{width:14px;height:14px;border-radius:50%;background:var(--line)}
+.progress i.done{background:var(--brand)}
+.progress i.now{background:var(--sun);box-shadow:0 0 0 3px var(--bg2)}
+
+/* board */
+.board{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:22px}
+.stage{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:340px;padding:18px 12px;border-radius:24px;background:radial-gradient(circle at 50% 30%,var(--stage1),var(--stage2));overflow:hidden}
+.art{display:flex;justify-content:center;align-items:flex-end;width:100%}
+.art svg{width:100%;max-width:300px;height:auto;animation:bob 4.5s ease-in-out infinite}
+.art.group svg{max-width:46%;margin-inline:-3%}
+.art.group svg:nth-child(2){animation-delay:-1.2s}
+.art.group svg:nth-child(3){animation-delay:-2.4s}
+.art.group svg:nth-child(4){animation-delay:-3.3s}
+.art.group.g4 svg{max-width:30%}
+@keyframes bob{50%{transform:translateY(-6px)}}
+.tag{font-family:var(--font-d);font-weight:600;font-size:15px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px 16px;text-align:center}
+.qa{display:flex;flex-direction:column;gap:14px;min-width:0}
+.timer{display:flex;align-items:center;gap:12px}
+.bar{flex:1;height:12px;background:var(--bg2);border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;width:100%;background:var(--brand);border-radius:999px}
+.bar i.late{background:var(--sun)}
+.sec{min-width:2.6ch;text-align:right;font-family:var(--font-d);font-weight:600;font-size:22px;font-variant-numeric:tabular-nums}
+.qno{font-family:var(--font-d);font-size:14px;color:var(--muted);letter-spacing:.04em}
+#q{font-size:clamp(21px,3.4vw,27px)}
+.opts{display:grid;gap:10px}
+.opt{display:flex;gap:12px;align-items:flex-start;width:100%;min-height:56px;text-align:left;background:var(--card);color:inherit;border:2px solid var(--line);border-radius:16px;padding:10px 14px;font:inherit;line-height:1.5;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--brand)}
+.opt .k{flex:none;width:34px;height:34px;border-radius:50%;background:var(--bg2);display:grid;place-items:center;font-family:var(--font-d);font-weight:600}
+.opt .t{flex:1;min-width:0;padding-top:3px}
+.opt .lab{display:block;font-size:14px;font-family:var(--font-d);font-weight:500;margin-top:2px}
+.opt:disabled{cursor:default}
+.opt.ok{border-color:var(--ok);background:var(--ok-bg)}
+.opt.ok .k{background:var(--ok);color:#fff}
+.opt.ok .lab{color:var(--ok)}
+.opt.mine{border-color:var(--warm);background:var(--warm-bg)}
+.opt.mine .lab{color:var(--warm)}
+.opt.dim{opacity:.62}
+.fb{border-radius:18px;padding:14px 16px;background:var(--warm-bg);display:flex;flex-direction:column;gap:6px}
+.fb.good{background:var(--ok-bg)}
+.fb h3{font-size:19px}
+.fb .ans{font-weight:600}
+.fb .row{display:flex;justify-content:flex-end;margin-top:6px}
+
+/* end */
+.end{display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px}
+.end-art{display:flex;justify-content:center;width:100%;max-width:520px;background:radial-gradient(circle at 50% 35%,var(--stage1),var(--stage2));border-radius:26px;padding:14px 8px 4px;overflow:hidden}
+.end-art svg{width:24%;height:auto;margin-inline:-1%}
+.big{font-family:var(--font-d);font-weight:700;font-size:clamp(40px,9vw,64px);line-height:1.1;font-variant-numeric:tabular-nums}
+.big small{font-size:18px;font-weight:500;color:var(--muted)}
+.stars{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;max-width:440px}
+.stars .ic{width:26px;height:26px}
+#review{width:100%;max-width:640px;text-align:left;background:var(--bg2);border-radius:20px;padding:16px 20px}
+#review h3{font-size:18px;margin-bottom:8px}
+#review ul{margin:0;padding-left:20px;display:grid;gap:8px}
+@media (max-width:760px){
+  .hero,.board{grid-template-columns:minmax(0,1fr)}
+  .stage{min-height:0;padding-block:12px}
+  .art svg{max-width:210px}
+  .art.group svg{max-width:44%}
+  .art.group.g4 svg{max-width:29%}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.7l-6.1 3.4 1.4-6.8-5.1-4.7 6.9-.8z"/></symbol>
+</svg>
+
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><g stroke="var(--brand)" stroke-width="2" stroke-linecap="round"><path d="M16 8L7 23M16 8l9 15M7 23h18"/></g><circle cx="16" cy="8" r="5" fill="var(--sun)"/><circle cx="7" cy="23" r="5" fill="var(--coral)"/><circle cx="25" cy="23" r="5" fill="var(--brand)"/></svg>
+      <span>วิชาแนะแนว ม.1</span>
+    </div>
+    <div class="stat" id="stat" hidden>
+      <span class="pill" id="qn">ข้อ 1 / 20</span>
+      <span class="pill"><svg class="ic" aria-hidden="true"><use href="#i-star"/></svg><span id="score">0</span> ดาว</span>
+    </div>
+  </header>
+
+  <main>
+    <section id="s-start" class="card hero">
+      <div class="hero-text">
+        <p class="eyebrow">ทบทวนท้ายคาบ</p>
+        <h1>ภารกิจเครือข่ายอาชีพ</h1>
+        <p class="lead">มาดูกันว่าอาชีพต่าง ๆ ช่วยเหลือและเชื่อมโยงกันอย่างไรในสังคมของเรา</p>
+        <ul class="rules">
+          <li>20 ข้อ ข้อละ 20 วินาที</li>
+          <li>ตอบถูกได้ 1 ดาว</li>
+          <li>ตอบพลาดก็ไม่เป็นไร มีเฉลยและคำอธิบายให้ทุกข้อ</li>
+        </ul>
+        <button class="btn" id="go" type="button">เริ่มเล่น</button>
+      </div>
+      <div class="hero-art" id="heroArt"></div>
+    </section>
+
+    <section id="s-game" class="card" hidden>
+      <div class="progress" id="progress" aria-hidden="true"></div>
+      <div class="board">
+        <div class="stage">
+          <div class="art" id="art"></div>
+          <div class="tag" id="tag"></div>
+        </div>
+        <div class="qa">
+          <div class="timer" role="timer" aria-label="เวลาที่เหลือ">
+            <div class="bar"><i id="bar"></i></div>
+            <span class="sec" id="sec">20</span>
+          </div>
+          <p class="qno" id="qno"></p>
+          <h2 id="q"></h2>
+          <div class="opts" id="opts"></div>
+          <div class="fb" id="fb" role="status" aria-live="polite" hidden></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="s-end" class="card end" hidden>
+      <div class="end-art" id="endArt"></div>
+      <h2 id="endTitle"></h2>
+      <p class="big"><span id="endScore">0</span> <small>ดาว จาก 20 ข้อ</small></p>
+      <div class="stars" id="endStars" aria-hidden="true"></div>
+      <p class="lead" id="endMsg"></p>
+      <div id="review" hidden>
+        <h3>เรื่องที่ลองทบทวนด้วยกันอีกนิด</h3>
+        <ul id="reviewList"></ul>
+      </div>
+      <button class="btn" id="again" type="button">เล่นอีกครั้ง</button>
+    </section>
+  </main>
+</div>
+<script>
+/* ---------- 3D clay-style career characters (inline SVG) ---------- */
+const SK={light:'#FFD3B0',tan:'#EDB68C',brown:'#C58C63',deep:'#98623F'};
+const h2r=h=>{h=h.replace('#','');return [0,2,4].map(i=>parseInt(h.substr(i,2),16))};
+const mix=(a,b,t)=>{const x=h2r(a),y=h2r(b);return '#'+x.map((v,i)=>Math.round(v+(y[i]-v)*t).toString(16).padStart(2,'0')).join('')};
+const lt=(c,t=.4)=>mix(c,'#ffffff',t), dk=(c,t=.25)=>mix(c,'#000000',t);
+let UID=0;
+const rg=(id,c)=>`<radialGradient id="${id}" cx=".32" cy=".25" r=".95"><stop offset="0" stop-color="${lt(c,.45)}"/><stop offset=".55" stop-color="${c}"/><stop offset="1" stop-color="${dk(c,.28)}"/></radialGradient>`;
+const lg=(id,c)=>`<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${lt(c,.4)}"/><stop offset="1" stop-color="${dk(c,.22)}"/></linearGradient>`;
+
+const HATS={
+  scrub:(G,c)=>`<path d="M65 72C62 38 138 38 135 72C118 60 82 60 65 72Z" fill="${G(c.hatc,'r')}"/>`,
+  nurse:(G,c)=>`<path d="M68 66C66 40 134 40 132 66C116 58 84 58 68 66Z" fill="${G('#FFFFFF','r')}"/><path d="M100 41v13M93.500 47.500h13" stroke="#E5484D" stroke-width="3.500" stroke-linecap="round"/>`,
+  hard:(G,c)=>`<path d="M64 68C62 34 138 34 136 68Z" fill="${G(c.hatc,'r')}"/><rect x="57" y="63" width="86" height="10" rx="5" fill="${G(dk(c.hatc,.12))}"/><rect x="94" y="36" width="12" height="28" rx="5" fill="${G(lt(c.hatc,.35))}"/>`,
+  helmet:(G,c)=>`<path d="M64 70C62 34 138 34 136 70Z" fill="${G(c.hatc,'r')}"/><path d="M60 74C80 64 120 64 140 74L136 66C120 58 80 58 64 66Z" fill="${G('#334155')}"/><rect x="94" y="40" width="12" height="16" rx="5" fill="${G(lt(c.hatc,.5))}" opacity=".8"/>`,
+  chef:(G)=>`<circle cx="82" cy="46" r="14" fill="${G('#FFFFFF','r')}"/><circle cx="118" cy="46" r="14" fill="${G('#FFFFFF','r')}"/><circle cx="100" cy="38" r="17" fill="${G('#FFFFFF','r')}"/><rect x="74" y="50" width="52" height="20" rx="8" fill="${G('#F5F5F5')}"/>`,
+  straw:(G)=>`<path d="M70 64C70 32 130 32 130 64Z" fill="${G('#F0C766','r')}"/><ellipse cx="100" cy="64" rx="58" ry="11" fill="${G('#E8B64C','r')}"/><path d="M71 60Q100 66 129 60L129 56Q100 62 71 56Z" fill="#D9534F"/>`,
+  pilot:(G)=>`<path d="M67 66C66 38 134 38 133 66Z" fill="${G('#27405E','r')}"/><rect x="62" y="62" width="76" height="10" rx="5" fill="${G('#1B2D45')}"/><circle cx="100" cy="53" r="6" fill="${G('#F4C14B','r')}"/>`,
+  fire:(G)=>`<path d="M64 68C62 34 138 34 136 68Z" fill="${G('#D9443B','r')}"/><path d="M54 74Q100 86 146 74L138 64H62Z" fill="${G('#B8332C')}"/><path d="M90 40h20v16H90z" fill="${G('#F4C14B')}"/>`,
+  cap:(G,c)=>`<path d="M66 68C64 38 136 38 134 68Z" fill="${G(c.hatc,'r')}"/><path d="M104 66Q152 62 152 72Q130 78 104 72Z" fill="${G(dk(c.hatc,.2))}"/>`,
+  phones:(G)=>`<path d="M64 84C58 36 142 36 136 84" fill="none" stroke="#2D3748" stroke-width="6" stroke-linecap="round"/><rect x="56" y="76" width="14" height="24" rx="7" fill="${G('#4A5568')}"/><rect x="130" y="76" width="14" height="24" rx="7" fill="${G('#4A5568')}"/>`
+};
+
+function avatar(c){
+  const D=[];
+  const G=(col,t)=>{const id='x'+(UID++);D.push(t==='r'?rg(id,col):lg(id,col));return `url(#${id})`};
+  const SH='x'+(UID++);
+  D.push(`<radialGradient id="${SH}"><stop offset="0" stop-color="#2b1a10" stop-opacity=".34"/><stop offset="1" stop-color="#2b1a10" stop-opacity="0"/></radialGradient>`);
+  const skin=c.skin||SK.light, hair=c.hair||'#2F2430';
+  const S=G(skin,'r'), T=G(c.shirt,'r'), H=G(hair,'r'), B=G(c.bg,'r');
+  const hand=(x,y)=>`<circle cx="${x}" cy="${y}" r="8.500" fill="${S}"/><ellipse cx="${x-3}" cy="${y-3.500}" rx="3.200" ry="2" fill="#fff" opacity=".4"/>`;
+  const P=(PROPS[c.prop]||(()=>({})))(G,c,S,hand);
+  const style=c.style||'short';
+  const hairBack=style==='long'?`<path d="M62 82C56 38 144 38 138 82L144 122Q100 132 56 122Z" fill="${H}"/>`:style==='bob'?`<path d="M63 82C58 40 142 40 137 82L140 108Q100 118 60 108Z" fill="${H}"/>`:style==='bun'?`<circle cx="100" cy="40" r="14" fill="${H}"/>`:'';
+  const fringe=`<path d="M65 78C61 44 139 44 135 78C128 64 116 58 100 58C84 58 72 64 65 78Z" fill="${H}"/>`;
+  const hairFront=style==='none'?'':fringe;
+  const hat=c.hat?HATS[c.hat](G,c):'';
+  const hat2=c.phones?HATS.phones(G,c):'';
+  const glasses=c.glasses?`<g fill="rgba(255,255,255,.18)" stroke="#3b2f35" stroke-width="2.200"><circle cx="86" cy="82" r="9.500"/><circle cx="114" cy="82" r="9.500"/><path d="M95.500 82h9" fill="none"/></g>`:'';
+  const collar=c.inner?`<path d="M86 118L100 142L114 118Z" fill="${c.inner}"/><path d="M86 118L100 142" stroke="${dk(c.shirt,.12)}" stroke-width="1.500" fill="none"/><path d="M114 118L100 142" stroke="${dk(c.shirt,.12)}" stroke-width="1.500" fill="none"/>`:'';
+  const sleeves=`<path d="M56 134Q46 154 62 160" stroke="${dk(c.shirt,.1)}" stroke-width="17" stroke-linecap="round" fill="none"/><path d="M144 134Q154 154 138 160" stroke="${dk(c.shirt,.1)}" stroke-width="17" stroke-linecap="round" fill="none"/>`;
+  const body=
+    `<circle cx="100" cy="104" r="88" fill="${B}" opacity=".85"/>`+
+    (P.deco||'')+
+    `<ellipse cx="100" cy="182" rx="66" ry="11" fill="url(#${SH})"/>`+
+    hairBack+
+    `<rect x="90" y="100" width="20" height="24" rx="8" fill="${dk(skin,.12)}"/>`+
+    `<path d="M50 178C50 138 70 118 100 118C130 118 150 138 150 178Q100 190 50 178Z" fill="${T}"/>`+
+    `<path d="M62 152C62 138 72 129 86 124" stroke="#fff" stroke-opacity=".38" stroke-width="6" stroke-linecap="round" fill="none"/>`+
+    collar+(P.extra?P.extra(G):'')+sleeves+
+    `<circle cx="65" cy="85" r="7" fill="${S}"/><circle cx="135" cy="85" r="7" fill="${S}"/>`+
+    `<circle cx="100" cy="80" r="35" fill="${S}"/>`+
+    `<ellipse cx="88" cy="62" rx="11" ry="6" fill="#fff" opacity=".28"/>`+
+    hairFront+
+    `<ellipse cx="86" cy="83" rx="3.600" ry="4.600" fill="#2b2230"/><ellipse cx="114" cy="83" rx="3.600" ry="4.600" fill="#2b2230"/>`+
+    `<circle cx="87.500" cy="81" r="1.400" fill="#fff"/><circle cx="115.500" cy="81" r="1.400" fill="#fff"/>`+
+    `<path d="M79 73Q86 69 93 73M107 73Q114 69 121 73" stroke="${dk(hair,.1)}" stroke-width="2.400" stroke-linecap="round" fill="none"/>`+
+    `<ellipse cx="77" cy="94" rx="6.500" ry="4" fill="#FF8A8A" opacity=".38"/><ellipse cx="123" cy="94" rx="6.500" ry="4" fill="#FF8A8A" opacity=".38"/>`+
+    `<path d="M91 95Q100 104 109 95" stroke="#7A3B3B" stroke-width="2.600" stroke-linecap="round" fill="none"/>`+
+    glasses+hat+hat2+(P.front||'');
+  return `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${c.name}"><defs>${D.join('')}</defs>${body}</svg>`;
+}
+/* ---------- props held by each career (return {deco, front}) ---------- */
+const PROPS={
+  doctor:(G,c,S,hand)=>({front:`<path d="M80 120C76 152 92 162 100 160C108 162 124 152 120 120" fill="none" stroke="#4B5563" stroke-width="4" stroke-linecap="round"/><circle cx="100" cy="164" r="7" fill="${G('#CBD5E1','r')}" stroke="#64748B" stroke-width="2"/><rect x="116" y="146" width="14" height="14" rx="3" fill="#fff" opacity=".9"/><path d="M123 149v8M119 153h8" stroke="#2A9D8F" stroke-width="2.400"/>`+hand(62,160)+hand(138,160)}),
+  nurse:(G,c,S,hand)=>({front:`<rect x="70" y="140" width="46" height="40" rx="6" fill="${G('#8B6B4A')}"/><rect x="73" y="144" width="40" height="33" rx="3" fill="#fff"/><rect x="88" y="136" width="12" height="9" rx="3" fill="${G('#CBD5E1')}"/><path d="M78 154h30M78 161h30M78 168h20" stroke="#9CA3AF" stroke-width="2.400" stroke-linecap="round"/><path d="M104 168l4 4 8-9" stroke="#2E9B66" stroke-width="3" fill="none" stroke-linecap="round"/>`+hand(66,162)+hand(126,168)}),
+  pharmacist:(G,c,S,hand)=>({front:`<rect x="92" y="140" width="26" height="36" rx="8" fill="${G('#F2A93B')}"/><rect x="94" y="132" width="22" height="11" rx="4" fill="${G('#FFFFFF')}"/><rect x="96" y="150" width="18" height="16" rx="3" fill="#fff"/><path d="M105 153v10M100 158h10" stroke="#2A9D8F" stroke-width="2.600"/>`+hand(64,160)+hand(122,164)}),
+  farmer:(G,c,S,hand)=>({deco:`<g transform="translate(44 44)"><ellipse cx="0" cy="0" rx="13" ry="6" fill="${G('#E5E7EB','r')}"/><path d="M-22 -9h18M4 -9h18M-22 9h18M4 9h18" stroke="#64748B" stroke-width="3" stroke-linecap="round"/><circle cx="-22" cy="-9" r="1.500" fill="#334155"/><circle cx="22" cy="-9" r="1.500" fill="#334155"/><circle cx="-22" cy="9" r="1.500" fill="#334155"/><circle cx="22" cy="9" r="1.500" fill="#334155"/><path d="M0 6v14" stroke="#64748B" stroke-width="2" stroke-dasharray="2 3"/></g>`,front:`<g stroke="#B8892D" stroke-width="2.600" stroke-linecap="round"><path d="M126 178L116 128M134 178L134 124M142 178L152 130"/></g><g fill="${G('#F2C14E')}"><ellipse cx="115" cy="122" rx="4.500" ry="10" transform="rotate(-12 115 122)"/><ellipse cx="134" cy="118" rx="4.500" ry="11"/><ellipse cx="153" cy="124" rx="4.500" ry="10" transform="rotate(12 153 124)"/></g>`+hand(64,160)+hand(134,160)}),
+  rider:(G,c,S,hand)=>({front:`<rect x="62" y="142" width="76" height="38" rx="7" fill="${G('#F58A3B')}"/><rect x="62" y="142" width="76" height="11" rx="5" fill="${G('#FFB067')}"/><rect x="95" y="142" width="10" height="38" fill="${G('#F7DCA5')}"/><rect x="110" y="158" width="20" height="12" rx="2" fill="#fff" opacity=".9"/><path d="M114 163h12M114 167h8" stroke="#9CA3AF" stroke-width="2"/>`+hand(60,166)+hand(140,166)}),
+  chef:(G,c,S,hand)=>({front:`<ellipse cx="100" cy="172" rx="40" ry="9" fill="${G('#FFFFFF','r')}"/><ellipse cx="100" cy="168" rx="26" ry="6" fill="${G('#E9A44C','r')}"/><ellipse cx="100" cy="161" rx="22" ry="7" fill="${G('#7A4A2B','r')}"/><path d="M78 157q5 -6 11 0t11 0t11 0t11 0" fill="none" stroke="#5DBB63" stroke-width="5" stroke-linecap="round"/><path d="M78 154C78 134 122 134 122 154Z" fill="${G('#F0B35A','r')}"/><circle cx="92" cy="145" r="1.500" fill="#fff"/><circle cx="104" cy="141" r="1.500" fill="#fff"/><circle cx="112" cy="147" r="1.500" fill="#fff"/>`+hand(66,172)+hand(134,172)}),
+  architect:(G,c,S,hand)=>({front:`<polygon points="120,152 134,146 134,172 120,178" fill="${G('#E9CBA0')}"/><polygon points="76,152 100,130 124,152" fill="${G('#E76F51')}"/><polygon points="124,152 100,130 112,124 136,146" fill="${G('#C95A3F')}"/><rect x="80" y="152" width="40" height="26" fill="${G('#FFE8C8')}"/><rect x="97" y="162" width="9" height="16" rx="2" fill="#8B5E3C"/><rect x="85" y="157" width="9" height="9" rx="1" fill="#9AD6F0"/><rect x="109" y="157" width="7" height="9" rx="1" fill="#9AD6F0"/>`+hand(72,170)+hand(130,176)}),
+  engineer:(G,c,S,hand)=>({front:`<g transform="rotate(-10 100 158)"><rect x="62" y="148" width="78" height="18" rx="9" fill="${G('#8FC1F2')}"/><circle cx="64" cy="157" r="9" fill="${G('#BBD9F7','r')}"/><path d="M76 153h40M76 158h30M76 162h38" stroke="#fff" stroke-width="1.800" stroke-linecap="round" opacity=".85"/></g>`+hand(70,168)+hand(134,152)}),
+  electrician:(G,c,S,hand)=>({deco:`<circle cx="156" cy="46" r="3" fill="#fff" opacity=".7"/><circle cx="44" cy="60" r="4" fill="#fff" opacity=".6"/>`,front:`<polygon points="108,134 86,164 99,164 92,186 120,152 106,152 114,134" fill="${G('#F7C948','r')}" stroke="#D69E2E" stroke-width="1.500" stroke-linejoin="round"/>`+hand(64,162)+hand(130,164)}),
+  teacher:(G,c,S,hand)=>({front:`<path d="M60 168Q80 162 100 170Q120 162 140 168L140 178Q120 172 100 180Q80 172 60 178Z" fill="${G('#E76F51')}"/><path d="M62 146Q82 140 100 148L100 172Q82 164 62 170Z" fill="${G('#FFF8E8')}"/><path d="M138 146Q118 140 100 148L100 172Q118 164 138 170Z" fill="${G('#FFFFFF')}"/><path d="M70 153q12 -3 24 2M70 159q12 -3 24 2M106 155q12 -5 24 -2M106 161q12 -5 24 -2" stroke="#B6BCC8" stroke-width="2" fill="none" stroke-linecap="round"/>`+hand(62,166)+hand(138,166)}),
+  developer:(G,c,S,hand)=>({deco:`<text x="132" y="52" font-family="monospace" font-weight="700" font-size="20" fill="#fff" opacity=".9">&lt;/&gt;</text>`,front:`<rect x="60" y="142" width="80" height="44" rx="7" fill="${G('#CBD5E1')}"/><circle cx="100" cy="164" r="6" fill="#fff" opacity=".75"/>`+hand(68,144)+hand(132,144)}),
+  ux:(G,c,S,hand)=>({deco:`<circle cx="46" cy="52" r="7" fill="#F2A93B"/><circle cx="62" cy="40" r="6" fill="#7C83FD"/><circle cx="32" cy="70" r="5" fill="#5DBB63"/>`,front:`<rect x="62" y="138" width="76" height="46" rx="7" fill="${G('#334155')}"/><rect x="67" y="143" width="66" height="36" rx="3" fill="#fff"/><rect x="71" y="147" width="26" height="14" rx="2" fill="#7C83FD"/><rect x="101" y="147" width="28" height="4" rx="2" fill="#CBD5E1"/><rect x="101" y="154" width="22" height="4" rx="2" fill="#CBD5E1"/><rect x="71" y="165" width="30" height="8" rx="4" fill="#2A9D8F"/><rect x="105" y="165" width="24" height="8" rx="4" fill="#F2A93B"/>`+hand(62,164)+hand(138,164)}),
+  analyst:(G,c,S,hand)=>({front:`<rect x="62" y="138" width="76" height="46" rx="7" fill="${G('#334155')}"/><rect x="67" y="143" width="66" height="36" rx="3" fill="#fff"/><rect x="74" y="162" width="10" height="13" rx="2" fill="#7C83FD"/><rect x="89" y="154" width="10" height="21" rx="2" fill="#2A9D8F"/><rect x="104" y="158" width="10" height="17" rx="2" fill="#F2A93B"/><rect x="119" y="148" width="10" height="27" rx="2" fill="#EC7C5C"/>`+hand(62,164)+hand(138,164)}),
+  creator:(G,c,S,hand)=>({deco:`<path d="M150 52c-4-9-16-4-12 5c2 4 8 8 12 11c4-3 10-7 12-11c4-9-8-14-12-5z" fill="#EC7C5C"/><path d="M42 64c-3-7-12-3-9 4c2 3 6 6 9 8c3-2 7-5 9-8c3-7-6-11-9-4z" fill="#F4B43A"/>`,front:`<rect x="118" y="124" width="28" height="50" rx="7" fill="${G('#334155')}"/><rect x="121" y="130" width="22" height="38" rx="3" fill="#9AD6F0"/><circle cx="132" cy="127" r="1.600" fill="#0F172A"/><path d="M128 143l10 6l-10 6z" fill="#fff"/>`+hand(62,152)+hand(126,168)}),
+  vet:(G,c,S,hand)=>({front:`<polygon points="82,142 88,126 98,138" fill="${G('#F4A64B')}"/><polygon points="118,142 112,126 102,138" fill="${G('#F4A64B')}"/><circle cx="100" cy="158" r="23" fill="${G('#F4A64B','r')}"/><ellipse cx="92" cy="156" rx="2.800" ry="3.600" fill="#2b2230"/><ellipse cx="108" cy="156" rx="2.800" ry="3.600" fill="#2b2230"/><path d="M97 163l3 3l3-3z" fill="#F28B9B"/><path d="M80 162h-10M80 166l-9 3M120 162h10M120 166l9 3" stroke="#fff" stroke-width="1.600" stroke-linecap="round"/>`+hand(80,176)+hand(120,176)}),
+  journalist:(G,c,S,hand)=>({front:`<path d="M88 118L100 150L112 118" fill="none" stroke="#EC7C5C" stroke-width="3"/><rect x="91" y="150" width="18" height="14" rx="2" fill="#fff"/><rect x="94" y="153" width="12" height="4" fill="#CBD5E1"/><path d="M128 180L118 142" stroke="#475569" stroke-width="6" stroke-linecap="round"/><circle cx="116" cy="132" r="11" fill="${G('#2D3748','r')}"/><path d="M109 130h14M109 135h14M116 123v18" stroke="#718096" stroke-width="1.200"/>`+hand(64,160)+hand(124,160)}),
+  firefighter:(G,c,S,hand)=>({deco:`<path d="M152 70c8-10 2-22-4-28c0 10-10 12-10 24c0 10 8 16 14 4z" fill="#F58A3B"/><path d="M149 70c4-6 1-12-1-15c0 6-5 7-5 13c0 6 5 9 6 2z" fill="#F7C948"/>`,front:`<rect x="112" y="136" width="24" height="44" rx="9" fill="${G('#E4473F','r')}"/><rect x="118" y="128" width="12" height="9" rx="3" fill="#475569"/><path d="M130 130q16 0 14 14" stroke="#475569" stroke-width="3.500" fill="none" stroke-linecap="round"/><rect x="116" y="150" width="16" height="12" rx="2" fill="#fff" opacity=".9"/>`+hand(64,162)+hand(114,164)}),
+  pilot:(G,c,S,hand)=>({deco:`<ellipse cx="46" cy="60" rx="18" ry="8" fill="#fff" opacity=".7"/><ellipse cx="56" cy="55" rx="12" ry="7" fill="#fff" opacity=".7"/><g transform="translate(150 50) rotate(-25)"><path d="M-16 0L14 -4L22 0L14 4Z" fill="${G('#FFFFFF')}"/><path d="M-2 0L-10 -14L-4 -14L8 0ZM-2 0L-10 14L-4 14L8 0Z" fill="${G('#CBD5E1')}"/></g>`,extra:(G)=>`<rect x="66" y="132" width="16" height="4" rx="2" fill="#F4C14B"/><rect x="66" y="139" width="16" height="4" rx="2" fill="#F4C14B"/><rect x="118" y="132" width="16" height="4" rx="2" fill="#F4C14B"/><rect x="118" y="139" width="16" height="4" rx="2" fill="#F4C14B"/><path d="M96 120h8l3 10l-7 22l-7-22z" fill="#E4473F"/>`,front:hand(62,160)+hand(138,160)}),
+  mechanic:(G,c,S,hand)=>({deco:`<circle cx="150" cy="52" r="17" fill="${G('#5DBB63','r')}"/><polygon points="153,40 143,54 150,54 147,64 158,50 151,50" fill="#fff"/>`,front:`<g transform="rotate(30 122 156)"><rect x="116" y="128" width="12" height="52" rx="6" fill="${G('#CBD5E1')}"/><circle cx="122" cy="128" r="12" fill="${G('#CBD5E1','r')}"/><rect x="118" y="114" width="8" height="14" rx="2" fill="${c.bg}"/></g>`+hand(64,162)+hand(124,160)})
+};
+
+/* ---------- the careers ---------- */
+const CAREERS={
+  doctor:{name:'แพทย์',shirt:'#FFFFFF',inner:'#2A9D8F',hair:'#2B2230',bg:'#BFE9E2',prop:'doctor',glasses:true},
+  nurse:{name:'พยาบาล',skin:SK.tan,shirt:'#7FD1C7',hair:'#5B3A2B',style:'bun',hat:'nurse',bg:'#FFD6D6',prop:'nurse'},
+  pharmacist:{name:'เภสัชกร',skin:SK.brown,shirt:'#FFFFFF',inner:'#F2A93B',hair:'#2B2230',style:'bob',bg:'#FFE7B8',prop:'pharmacist'},
+  farmer:{name:'เกษตรกร',skin:SK.tan,shirt:'#6FBF73',hair:'#3A2A22',hat:'straw',bg:'#DDF1C2',prop:'farmer'},
+  rider:{name:'ไรเดอร์ส่งของ',skin:SK.light,shirt:'#34B1A4',hair:'#2B2230',hat:'helmet',hatc:'#F6C445',bg:'#FFE0C4',prop:'rider'},
+  chef:{name:'เชฟ',skin:SK.deep,shirt:'#FFFFFF',inner:'#E4473F',hair:'#2B2230',hat:'chef',bg:'#FFD9C7',prop:'chef'},
+  architect:{name:'สถาปนิก',skin:SK.light,shirt:'#7D8CC4',hair:'#4A3128',style:'long',glasses:true,bg:'#E3E6FA',prop:'architect'},
+  engineer:{name:'วิศวกร',skin:SK.brown,shirt:'#F58A3B',hair:'#2B2230',hat:'hard',hatc:'#F6C445',bg:'#FFE9B8',prop:'engineer'},
+  electrician:{name:'ช่างไฟฟ้า',skin:SK.tan,shirt:'#3E6FB5',hair:'#2B2230',hat:'hard',hatc:'#FFFFFF',bg:'#CFE3FA',prop:'electrician'},
+  teacher:{name:'ครู',skin:SK.light,shirt:'#C27BB3',hair:'#4A3128',style:'bob',glasses:true,bg:'#F6DDF0',prop:'teacher'},
+  developer:{name:'โปรแกรมเมอร์',skin:SK.tan,shirt:'#7C6BD6',hair:'#2B2230',phones:true,bg:'#DCD6FA',prop:'developer'},
+  ux:{name:'นักออกแบบ UX',skin:SK.light,shirt:'#EC7C5C',hair:'#7A3F63',style:'bun',bg:'#FFD9CC',prop:'ux'},
+  analyst:{name:'นักวิเคราะห์ข้อมูล',skin:SK.brown,shirt:'#4B8FC9',hair:'#2B2230',glasses:true,bg:'#CFE6F8',prop:'analyst'},
+  creator:{name:'ครีเอเตอร์',skin:SK.light,shirt:'#F28DB2',hair:'#5B3A2B',style:'long',phones:true,bg:'#FFD6E6',prop:'creator'},
+  vet:{name:'สัตวแพทย์',skin:SK.tan,shirt:'#5CB8A8',inner:'#FFFFFF',hair:'#3A2A22',style:'bob',bg:'#D3F0E8',prop:'vet'},
+  journalist:{name:'นักข่าว',skin:SK.deep,shirt:'#5A6B8C',hair:'#1F1A24',style:'long',bg:'#DCE3F2',prop:'journalist'},
+  firefighter:{name:'นักดับเพลิง',skin:SK.light,shirt:'#3B4A66',hair:'#2B2230',hat:'fire',bg:'#FFD0C4',prop:'firefighter'},
+  pilot:{name:'นักบิน',skin:SK.tan,shirt:'#27405E',hair:'#2B2230',hat:'pilot',bg:'#CDE8FA',prop:'pilot'},
+  mechanic:{name:'ช่างซ่อมรถไฟฟ้า',skin:SK.brown,shirt:'#4C7D6B',hair:'#2B2230',hat:'cap',hatc:'#E4473F',bg:'#D6EEDB',prop:'mechanic'}
+};
+/* ---------- 20 questions (c = index of the correct choice before shuffling) ---------- */
+const Q=[
+{art:['doctor','farmer','engineer'],tag:'ทีมอาชีพในสังคม',topic:'ความหมายของเครือข่ายอาชีพ',
+ q:'“เครือข่ายอาชีพ” หมายถึงอะไร?',
+ a:['อาชีพต่าง ๆ ที่เชื่อมโยงและช่วยเหลือกันในสังคม','อาชีพที่ได้เงินเดือนมากที่สุด','อาชีพที่ทำงานคนเดียวโดยไม่ต้องพึ่งใคร','อาชีพที่อยู่ในบริษัทใหญ่เท่านั้น'],c:0,
+ e:'เครือข่ายอาชีพคือการที่อาชีพต่าง ๆ เชื่อมโยงและพึ่งพากัน เช่น แพทย์ เกษตรกร และวิศวกร ต่างทำหน้าที่ของตัวเอง แล้วช่วยให้สังคมอยู่ได้ด้วยกัน'},
+{art:['doctor','nurse','pharmacist'],tag:'ทีมโรงพยาบาล',topic:'การทำงานเป็นทีมในโรงพยาบาล',
+ q:'ที่โรงพยาบาล แพทย์ตรวจรักษา พยาบาลดูแลผู้ป่วย และเภสัชกรจัดยา เรื่องนี้แสดงให้เห็นอะไร?',
+ a:['ทุกอาชีพทำงานเป็นทีม เพื่อดูแลสุขภาพของคนในสังคม','ทุกคนทำงานเหมือนกันทุกอย่าง','แต่ละอาชีพทำงานแยกกัน ไม่เกี่ยวข้องกัน','แต่ละอาชีพต้องแย่งกันหาผู้ป่วย'],c:0,
+ e:'แต่ละอาชีพมีหน้าที่ต่างกันแต่ช่วยเสริมกัน เหมือนวงดนตรีที่ทุกเครื่องดนตรีสำคัญ ผู้ป่วยจึงได้รับการดูแลครบทุกด้าน'},
+{art:['pharmacist'],topic:'อาชีพด้านสุขภาพ',
+ q:'เมื่อแพทย์สั่งยาแล้ว อาชีพใดช่วยจัดยาให้ถูกต้อง และแนะนำวิธีใช้ยาอย่างปลอดภัย?',
+ a:['เภสัชกร','สถาปนิก','นักบิน','ช่างไฟฟ้า'],c:0,
+ e:'เภสัชกรเป็นผู้เชี่ยวชาญเรื่องยา ช่วยตรวจสอบและอธิบายวิธีใช้ ทำให้การรักษาของแพทย์ปลอดภัยและได้ผลดี'},
+{art:['farmer'],topic:'สายโซ่จากผู้ผลิตถึงผู้บริโภค',
+ q:'ข้าวผัดหนึ่งจานเดินทางมาถึงโต๊ะเราได้อย่างไร? เลือกลำดับที่เหมาะสม',
+ a:['เกษตรกรปลูกข้าว → โรงสีสีข้าว → คนขนส่งนำไปขาย → เชฟปรุงอาหาร','เชฟปรุงอาหาร → โรงสีสีข้าว → เกษตรกรปลูกข้าว → คนขนส่ง','คนขนส่ง → เชฟปรุงอาหาร → เกษตรกรปลูกข้าว → โรงสีสีข้าว','โรงสีสีข้าว → เชฟปรุงอาหาร → คนขนส่ง → เกษตรกรปลูกข้าว'],c:0,
+ e:'อาหารหนึ่งจานต้องผ่านหลายอาชีพต่อกันเป็นสายโซ่ ตั้งแต่ผู้ผลิตวัตถุดิบ การแปรรูป การขนส่ง ไปจนถึงคนปรุงอาหาร ถ้าขาดคนใดคนหนึ่ง สายโซ่ก็ติดขัด'},
+{art:['rider'],topic:'การพึ่งพากันของอาชีพ',
+ q:'ถ้าสังคมไม่มีอาชีพขนส่งและไรเดอร์เลย ร้านค้าและคนซื้อจะเจอเรื่องใดมากที่สุด?',
+ a:['สินค้าส่งถึงมือคนซื้อได้ยากขึ้น','ทุกคนมีรายได้เพิ่มขึ้นทันที','ร้านค้าขายของได้ง่ายกว่าเดิม','ไม่มีอะไรเปลี่ยนไปเลย'],c:0,
+ e:'อาชีพขนส่งเป็นสะพานเชื่อมผู้ผลิต ร้านค้า และผู้ซื้อ เมื่อขาดอาชีพนี้ ทุกฝ่ายที่เกี่ยวข้องก็ได้รับผลกระทบ'},
+{art:['chef'],topic:'อาชีพรอบร้านอาหาร',
+ q:'ร้านอาหารหนึ่งร้านอยู่ได้เพราะใครบ้าง?',
+ a:['เชฟ พนักงานเสิร์ฟ เกษตรกรผู้ปลูกวัตถุดิบ และคนส่งของ ช่วยกันทำงาน','เชฟเพียงคนเดียวก็เพียงพอแล้ว','พนักงานเสิร์ฟคนเดียวก็เพียงพอแล้ว','ลูกค้าอย่างเดียว ไม่ต้องมีอาชีพอื่น'],c:0,
+ e:'ร้านอาหารมีอาชีพเกี่ยวข้องมากมาย ทั้งในครัว หน้าร้าน และนอกร้านอย่างเกษตรกรและคนขนส่ง ทุกคนเป็นส่วนหนึ่งของเครือข่ายเดียวกัน'},
+{art:['architect'],topic:'ทีมสร้างบ้าน: การออกแบบ',
+ q:'ก่อนสร้างบ้านหนึ่งหลัง ใครเป็นคนออกแบบรูปร่างและการใช้งานของบ้านให้สวยและอยู่สบาย?',
+ a:['สถาปนิก','นักข่าว','เภสัชกร','ครีเอเตอร์'],c:0,
+ e:'สถาปนิกออกแบบรูปแบบและพื้นที่ใช้สอยของอาคาร แล้วส่งแบบให้วิศวกรและช่างก่อสร้างทำงานต่อ'},
+{art:['engineer'],topic:'ทีมสร้างบ้าน: โครงสร้าง',
+ q:'แบบบ้านสวยแล้ว อาชีพใดช่วยคำนวณให้โครงสร้างแข็งแรงและปลอดภัยก่อนลงมือก่อสร้าง?',
+ a:['วิศวกรโยธา','ช่างภาพ','ครู','นักบิน'],c:0,
+ e:'วิศวกรใช้ความรู้คณิตศาสตร์และวิทยาศาสตร์คำนวณโครงสร้าง เพื่อให้อาคารแข็งแรง ทำงานต่อจากสถาปนิกอย่างเป็นขั้นตอน'},
+{art:['electrician'],topic:'ทีมสร้างบ้าน: การประสานงาน',
+ q:'ช่างไฟฟ้าต้องทำงานประสานกับใครมากที่สุดในงานสร้างบ้าน?',
+ a:['วิศวกรและช่างก่อสร้าง','นักข่าวและนักบิน','เกษตรกรและสัตวแพทย์','เภสัชกรและพยาบาล'],c:0,
+ e:'ช่างไฟฟ้าวางระบบไฟตามแบบของวิศวกร และต้องทำงานให้เข้ากับช่างก่อสร้าง งานหนึ่งชิ้นจึงต้องอาศัยหลายอาชีพช่วยกัน'},
+{art:['teacher'],topic:'ครูกับอาชีพอื่น ๆ',
+ q:'ครูสอนนักเรียนให้เติบโตไปเป็นแพทย์ วิศวกร เชฟ และอีกหลายอาชีพ ข้อใดอธิบายครูได้ดีที่สุด?',
+ a:['ครูช่วยสร้างคนให้ไปทำอาชีพอื่น ๆ ในสังคมต่อไป','ครูไม่เกี่ยวข้องกับอาชีพอื่นเลย','ครูทำงานเฉพาะในโรงเรียน จึงไม่เชื่อมกับใคร','ครูเป็นอาชีพเดียวที่สำคัญ อาชีพอื่นไม่สำคัญ'],c:0,
+ e:'ความรู้จากครูเป็นจุดเริ่มต้นของหลายอาชีพ ครูจึงเชื่อมโยงกับทุกอาชีพในสังคม'},
+{art:['developer'],topic:'อาชีพในโลกดิจิทัล',
+ q:'แอปสั่งอาหารที่เราใช้ทุกวัน เกิดจากใครบ้าง?',
+ a:['โปรแกรมเมอร์ นักออกแบบ UX และนักวิเคราะห์ข้อมูล ทำงานร่วมกัน','โปรแกรมเมอร์คนเดียวทำได้ทุกอย่าง','แอปสร้างตัวเองได้ ไม่ต้องใช้คน','เฉพาะร้านอาหารเท่านั้นที่สร้างแอป'],c:0,
+ e:'แอปหนึ่งตัวต้องมีทีมหลายอาชีพ คนเขียนโปรแกรม คนออกแบบหน้าจอ และคนดูข้อมูลการใช้งาน แล้วยังต้องมีร้านอาหารและไรเดอร์อยู่ในระบบด้วย'},
+{art:['ux'],topic:'อาชีพในโลกดิจิทัล',
+ q:'นักออกแบบ UX ทำหน้าที่อะไรในทีมสร้างแอป?',
+ a:['ออกแบบหน้าจอและขั้นตอนการใช้งานให้ใช้ง่าย','ขับรถส่งอาหารให้ลูกค้า','ปลูกผักส่งร้านอาหาร','ตรวจรักษาผู้ใช้แอปที่ป่วย'],c:0,
+ e:'UX คือประสบการณ์ของผู้ใช้ นักออกแบบจะคิดว่าปุ่มควรอยู่ตรงไหน เมนูควรเป็นแบบใด เพื่อให้คนใช้แล้วรู้สึกสะดวก'},
+{art:['analyst'],topic:'อาชีพในโลกดิจิทัล',
+ q:'นักวิเคราะห์ข้อมูลช่วยร้านค้าออนไลน์ได้อย่างไร?',
+ a:['ดูข้อมูลการซื้อ เพื่อช่วยตัดสินใจว่าสินค้าไหนควรสั่งเพิ่ม','ซ่อมแอร์ให้ร้านค้า','ปรุงอาหารขายในร้าน','ดับไฟไหม้ในร้าน'],c:0,
+ e:'นักวิเคราะห์ข้อมูลอ่านตัวเลขและแนวโน้ม เช่น สินค้าไหนขายดี แล้วบอกเจ้าของร้านเพื่อวางแผนได้แม่นยำขึ้น'},
+{art:['creator'],topic:'อาชีพใหม่เชื่อมกับอาชีพเดิม',
+ q:'ครีเอเตอร์ทำคลิปวิดีโอแนะนำสินค้า ต้องทำงานร่วมกับอาชีพใดได้บ้าง?',
+ a:['คนตัดต่อวิดีโอ ช่างภาพ และเจ้าของสินค้า','นักบินและนักดับเพลิง','เกษตรกรและสัตวแพทย์เท่านั้น','ไม่ต้องทำงานกับใครเลย'],c:0,
+ e:'อาชีพใหม่ ๆ มักเชื่อมกับอาชีพอื่นเสมอ ครีเอเตอร์ต้องมีทีมถ่ายทำ ตัดต่อ และร้านค้าที่เป็นเจ้าของสินค้า'},
+{art:['vet'],topic:'สายโซ่จากผู้ผลิตถึงผู้บริโภค',
+ q:'สัตวแพทย์ดูแลสุขภาพสัตว์ งานนี้ช่วยเกษตรกรผู้เลี้ยงสัตว์ได้อย่างไร?',
+ a:['ทำให้สัตว์แข็งแรง ได้เนื้อ นม และไข่ที่ปลอดภัยกับผู้บริโภค','ทำให้สัตว์ป่วยมากขึ้น','ไม่เกี่ยวกับเกษตรกรเลย เพราะรักษาแค่สัตว์เลี้ยงในบ้าน','ทำให้เกษตรกรไม่ต้องใช้คนขนส่ง'],c:0,
+ e:'สัตวแพทย์ช่วยป้องกันและรักษาโรคสัตว์ ผลผลิตจากฟาร์มจึงปลอดภัย แล้วส่งต่อไปถึงโรงงาน ร้านค้า และคนทั่วไป'},
+{art:['journalist'],topic:'อาชีพตัวกลางของสังคม',
+ q:'ทำไมนักข่าวจึงเป็นอาชีพที่เชื่อมโยงกับอาชีพอื่นมาก?',
+ a:['เพราะต้องสัมภาษณ์และนำข้อมูลจากหลายอาชีพมาเล่าให้สังคมรู้','เพราะนักข่าวทำหน้าที่แทนทุกอาชีพ','เพราะนักข่าวไม่ต้องหาข้อมูลเอง','เพราะนักข่าวทำงานอยู่ที่บ้านคนเดียว'],c:0,
+ e:'ข่าวสุขภาพต้องคุยกับแพทย์ ข่าวสภาพอากาศต้องคุยกับนักวิทยาศาสตร์ นักข่าวจึงเป็นตัวกลางส่งความรู้จากหลายอาชีพถึงสังคม'},
+{art:['firefighter'],topic:'การช่วยเหลือกันในเหตุฉุกเฉิน',
+ q:'เกิดเหตุไฟไหม้ในชุมชน อาชีพใดบ้างที่ต้องมาช่วยกัน?',
+ a:['นักดับเพลิง เจ้าหน้าที่กู้ภัย ตำรวจ และพยาบาล','เฉพาะนักดับเพลิงเท่านั้น','เฉพาะเชฟและครีเอเตอร์','ไม่มีใครต้องช่วย เพราะไฟดับเอง'],c:0,
+ e:'เหตุฉุกเฉินต้องใช้หลายอาชีพช่วยกัน ทั้งดับไฟ ช่วยชีวิต ดูแลความปลอดภัย และรักษาผู้บาดเจ็บ เป็นตัวอย่างชัดเจนของสังคมที่พึ่งพากัน'},
+{art:['pilot'],topic:'การพึ่งพากันของอาชีพ',
+ q:'เครื่องบินหนึ่งลำจะบินได้อย่างปลอดภัย นักบินต้องพึ่งพาใครบ้าง?',
+ a:['ช่างซ่อมบำรุงเครื่องบินและเจ้าหน้าที่ควบคุมการบิน','เชฟและช่างตัดผม','เกษตรกรและสัตวแพทย์','ไม่ต้องพึ่งใคร นักบินทำได้ทุกอย่างเอง'],c:0,
+ e:'ช่างตรวจเครื่อง เจ้าหน้าที่ควบคุมการบิน และลูกเรือ ช่วยกันดูแลทุกขั้นตอน ทำให้เที่ยวบินปลอดภัย'},
+{art:['mechanic'],topic:'อาชีพใหม่เกิดจากความเปลี่ยนแปลง',
+ q:'รถยนต์ไฟฟ้ามีมากขึ้น จึงเกิดอาชีพช่างซ่อมรถไฟฟ้า เรื่องนี้บอกอะไรเรา?',
+ a:['ความต้องการของสังคมและเทคโนโลยีใหม่ ทำให้เกิดอาชีพใหม่ ๆ ได้','อาชีพเก่าทุกอาชีพจะหายไปทันที','อาชีพไม่เคยเปลี่ยนแปลงเลย','มีแต่ช่างซ่อมรถไฟฟ้าเท่านั้นที่จำเป็น'],c:0,
+ e:'เมื่อสังคมและเทคโนโลยีเปลี่ยน อาชีพใหม่ก็เกิดขึ้น ส่วนอาชีพเดิมหลายอาชีพก็ปรับตัวและเรียนรู้ทักษะใหม่ เราจึงควรเรียนรู้อยู่เสมอ'},
+{art:['teacher','farmer','doctor','rider'],tag:'ทุกอาชีพช่วยกัน',topic:'คุณค่าของทุกอาชีพ',
+ q:'ข้อใดกล่าวได้ถูกต้องที่สุดเกี่ยวกับอาชีพในสังคม?',
+ a:['ทุกอาชีพมีคุณค่า และเราควรเลือกอาชีพที่เหมาะกับความสนใจและความถนัดของตัวเอง','มีเพียงบางอาชีพที่สำคัญ อาชีพอื่นไม่จำเป็น','ควรเลือกอาชีพตามที่เพื่อนเลือกเท่านั้น','เลือกอาชีพแล้วไม่ต้องเรียนรู้สิ่งใหม่อีก'],c:0,
+ e:'สังคมเดินไปได้เพราะทุกอาชีพช่วยกัน และการเลือกอาชีพที่ตรงกับความสนใจและความถนัดของเรา จะทำให้เราทำงานได้ดีและมีความสุข'}
+];
+/* ---------- game logic ---------- */
+const $=id=>document.getElementById(id);
+const LET=['ก','ข','ค','ง'], TIME=20, N=Q.length;
+const GOOD=['ถูกต้อง! เก่งมากเลย','ใช่เลย! ได้ 1 ดาว','เยี่ยมไปเลย ได้ 1 ดาว'];
+const SOFT=['ไม่เป็นไรนะ มาดูเฉลยด้วยกัน','พลาดนิดเดียวเอง ลองดูเหตุผลนี้นะ','ข้อนี้ยากหน่อย เรียนรู้ไปด้วยกันนะ'];
+let idx=0, score=0, missed=[], deadline=0, tid=0, locked=true, cur=null;
+
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const artHTML=ids=>ids.map(id=>avatar(CAREERS[id])).join('');
+const show=id=>{['s-start','s-game','s-end'].forEach(s=>$(s).hidden=(s!==id));$('stat').hidden=(id!=='s-game')};
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+
+function drawProgress(){
+  $('progress').innerHTML=Q.map((_,i)=>`<i class="${i<idx?'done':i===idx?'now':''}"></i>`).join('');
+}
+
+function begin(){
+  idx=0;score=0;missed=[];
+  $('score').textContent='0';
+  show('s-game');
+  render();
+}
+
+function render(){
+  const q=Q[idx];
+  cur={q,order:shuffle([0,1,2,3])};
+  locked=false;
+  drawProgress();
+  $('qn').textContent=`ข้อ ${idx+1} / ${N}`;
+  $('qno').textContent=`คำถามข้อที่ ${idx+1}`;
+  const art=$('art');
+  art.className='art'+(q.art.length>1?' group'+(q.art.length>3?' g4':''):'');
+  art.innerHTML=artHTML(q.art);
+  $('tag').textContent=q.tag||CAREERS[q.art[0]].name;
+  $('q').textContent=q.q;
+  $('fb').hidden=true;
+  const box=$('opts');
+  box.innerHTML='';
+  cur.order.forEach((orig,pos)=>{
+    const b=document.createElement('button');
+    b.type='button';b.className='opt';b.dataset.orig=orig;
+    b.innerHTML=`<span class="k">${LET[pos]}</span><span class="t"></span>`;
+    b.querySelector('.t').textContent=q.a[orig];
+    b.addEventListener('click',()=>answer(orig));
+    box.appendChild(b);
+  });
+  startTimer();
+}
+
+function startTimer(){
+  clearInterval(tid);
+  deadline=Date.now()+TIME*1000;
+  tick();
+  tid=setInterval(tick,100);
+}
+function tick(){
+  const left=Math.max(0,deadline-Date.now());
+  const bar=$('bar');
+  bar.style.width=(left/(TIME*1000)*100)+'%';
+  bar.classList.toggle('late',left<=5000);
+  $('sec').textContent=Math.ceil(left/1000);
+  if(left<=0&&!locked){answer(-1)}
+}
+
+function answer(orig){
+  if(locked)return;
+  locked=true;
+  clearInterval(tid);
+  const q=cur.q, right=orig===q.c, timeout=orig===-1;
+  if(right){score++;$('score').textContent=score}else{missed.push(q)}
+  [...$('opts').children].forEach(b=>{
+    const o=+b.dataset.orig;
+    b.disabled=true;
+    if(o===q.c){b.classList.add('ok');b.insertAdjacentHTML('beforeend','')}
+    const t=b.querySelector('.t');
+    if(o===q.c){t.insertAdjacentHTML('beforeend','<span class="lab">คำตอบที่ถูกต้อง</span>')}
+    else if(o===orig){b.classList.add('mine');t.insertAdjacentHTML('beforeend','<span class="lab">คำตอบของเรา</span>')}
+    else b.classList.add('dim');
+  });
+  const fb=$('fb');
+  fb.className='fb'+(right?' good':'');
+  const head=right?pick(GOOD):timeout?'หมดเวลาแล้ว ไม่เป็นไรนะ เรามาดูเฉลยด้วยกัน':pick(SOFT);
+  fb.innerHTML=`<h3></h3><p class="ans"></p><p class="exp"></p><div class="row"><button type="button" class="btn" id="next"></button></div>`;
+  fb.querySelector('h3').textContent=head;
+  fb.querySelector('.ans').textContent=right?'':`คำตอบที่ถูกคือ “${q.a[q.c]}”`;
+  if(right)fb.querySelector('.ans').remove();
+  fb.querySelector('.exp').textContent=(right?'รู้เพิ่มอีกนิด: ':'เพราะว่า ')+q.e;
+  const nx=$('next');
+  nx.textContent=idx===N-1?'ดูผลของเรา':'ข้อต่อไป';
+  nx.addEventListener('click',advance);
+  fb.hidden=false;
+  nx.focus({preventScroll:true});
+  fb.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+
+function advance(){
+  if(idx>=N-1){finish();return}
+  idx++;
+  render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function finish(){
+  clearInterval(tid);
+  show('s-end');
+  $('endArt').innerHTML=artHTML(['doctor','teacher','farmer','developer']);
+  $('endScore').textContent=score;
+  $('endStars').innerHTML=Array.from({length:score},()=>'<svg class="ic"><use href="#i-star"/></svg>').join('');
+  let title,msg;
+  if(score>=17){title='เก่งมาก! เห็นภาพเครือข่ายอาชีพชัดเจนเลย';msg='เธอเข้าใจแล้วว่าอาชีพต่าง ๆ ช่วยเหลือและเชื่อมโยงกันอย่างไร ขอบคุณที่ตั้งใจเล่นนะ'}
+  else if(score>=12){title='ทำได้ดีมาก!';msg='เธอเห็นความเชื่อมโยงของอาชีพได้หลายเรื่องแล้ว ส่วนที่เหลือเก็บไว้ทบทวนได้ในรอบหน้า'}
+  else if(score>=6){title='กำลังไปได้ดีเลย';msg='ทุกข้อที่เล่นช่วยให้เราเข้าใจอาชีพรอบตัวมากขึ้น ลองเล่นอีกรอบ แล้วจะเห็นภาพชัดขึ้นอีกนะ'}
+  else{title='ขอบคุณที่ตั้งใจเล่นนะ';msg='เรื่องใหม่ ๆ ต้องใช้เวลาทำความรู้จักกันก่อน เฉลยที่ได้อ่านวันนี้เป็นต้นทุนที่ดี ลองเล่นอีกครั้งแล้วจะง่ายขึ้นเยอะเลย'}
+  $('endTitle').textContent=title;
+  $('endMsg').textContent=msg;
+  const rv=$('review'), list=$('reviewList');
+  list.innerHTML='';
+  if(missed.length){
+    missed.forEach(q=>{const li=document.createElement('li');li.innerHTML='<b></b> <span></span>';li.querySelector('b').textContent=q.topic+' ';li.querySelector('span').textContent='คำตอบ: '+q.a[q.c];list.appendChild(li)});
+    rv.hidden=false;
+  }else rv.hidden=true;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+document.addEventListener('keydown',e=>{
+  if(!$('s-game').hidden&&!locked&&/^[1-4]$/.test(e.key)){
+    const b=$('opts').children[+e.key-1];
+    if(b)answer(+b.dataset.orig);
+  }
+});
+$('go').addEventListener('click',begin);
+$('again').addEventListener('click',begin);
+$('heroArt').innerHTML=artHTML(['teacher','doctor','developer']);
+</script>
